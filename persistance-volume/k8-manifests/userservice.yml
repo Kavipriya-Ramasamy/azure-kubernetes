@@ -1,0 +1,50 @@
+#Define a deployment named `userservice-deployment` by using the image pushed to Docker Hub
+#Use container port 8080.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: userservice-deployment
+    version: v1
+  name: userservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice-deployment
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: userservice-deployment
+        version: v1
+    spec:
+      containers:
+        -
+          image: "kavipriyasdocker/persistance-demo"
+          imagePullPolicy: Always
+          name: myspring-service
+          ports:
+            -
+              containerPort: 8080
+              name: http
+              protocol: TCP
+---
+#Define a service named `userservice-svc` of type NodePort and use the above created deployment as selector
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: userservice-svc
+    version: v1
+  name: userservice-svc
+spec:
+  ports:
+    -
+      name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: userservice-deployment
+    version: v1
+  type: NodePort

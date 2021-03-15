@@ -1,0 +1,17 @@
+#Apply ingress to the service used to expose the Spring Boot app
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: userservice-svc
+          servicePort: 8080
+

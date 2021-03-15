@@ -1,0 +1,32 @@
+#Create a deployment by using the image with tag 1.0 pushed to dockerhub as image
+#Use containerPort 8081
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kubernetes-excercise-rollout
+    version: v1
+  name: kubernetes-excercise-rollout
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: kubernetes-excercise-rollout
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: kubernetes-excercise-rollout
+        version: v1
+    spec:
+      containers:
+        -
+          image: "kavipriyasdocker/rollout-rollback:1"
+          imagePullPolicy: Always
+          name: kubernetes-excercise-rollout
+          ports:
+            -
+              containerPort: 8081
+              name: http
+              protocol: TCP

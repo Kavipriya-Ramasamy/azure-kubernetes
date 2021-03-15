@@ -1,0 +1,8 @@
+#Create ConfigMap with key and value, to be accessed while deploying SpringBoot application
+#For example `message: Welcome...`
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: hellospringconfigmap
+data:
+  sb.k8.message: "message from config map"

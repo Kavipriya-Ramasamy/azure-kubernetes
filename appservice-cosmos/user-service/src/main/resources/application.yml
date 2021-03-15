@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: user-service-kavi
+  data:
+    mongodb:
+      #specify the mongodb deployment name as host
+      database: newDb
+      uri: mongodb://kavimongodb:QyoH7WL6KLdZpB2hWd31ptfEEk6T3afxLWXyAeVX7Ehn1TxdijqLnxxHQilg9l6lci6wWXsj3EteRwo62cQnZw==@kavimongodb.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@kavimongodb@
+    datasource:
+      driver-class-name: mongodb.jdbc.MongoDriver
+
+app:
+  exceptionMessage: User already exists!
+  globalExceptionMessage: Database connectivity lost!
+

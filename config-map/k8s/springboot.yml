@@ -1,0 +1,75 @@
+#Create a deployment by using the image pushed to Docker Hub
+#Use containerPort 8081
+#While creating the deployment, get the values from ConfigMap and secret and follow the below instructions
+#Use the name as `GREETING` for the key which has to accessed from ConfigMap, which is used in the SpringBoot application
+#Use the names as follows `MONGO_INITDB_ROOT_USERNAME` - username, `MONGO_INITDB_ROOT_PASSWORD` - password for the values access from secret
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kubernetes-spring-config-map
+    version: v1
+  name: kubernetes-spring-config-map
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: kubernetes-spring-config-map
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: kubernetes-spring-config-map
+        version: v1
+    spec:
+      containers:
+        -
+          image: "kavipriyasdocker/kubernetes-excercise-3"
+          imagePullPolicy: Always
+          name: kubernetes-spring-config-map
+          env:
+          - name: GREETING 
+            value: "Greetingss.."
+          - name: sb.k8.message 
+            valueFrom:
+              configMapKeyRef:
+                name: hellospringconfigmap
+                key: sb.k8.message
+          - name: MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongosecret
+                key: username
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongosecret
+                key: password
+          ports:
+            -
+              containerPort: 8081
+              name: http
+              protocol: TCP
+
+---
+
+#Create the service of type NodePort and use the above created deployment as selector
+#Use port 8081
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kubernetes-spring-config-map
+    version: v1
+  name: kubernetes-spring-config-map
+spec:
+  ports:
+    -
+      name: http
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: kubernetes-spring-config-map
+    version: v1
+  type: NodePort
+
